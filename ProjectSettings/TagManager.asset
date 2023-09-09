@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Enemy
   - EnemyProjectile
-  - Coin
+  - Collectable
   layers:
   - Default
   - TransparentFX
@@ -14,11 +14,11 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Firing
+  - Pickup
+  - Collectable
+  - Projectile
+  - Enemy
   - 
   - 
   - 

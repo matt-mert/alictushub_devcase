@@ -1,9 +1,10 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("CharacterSettings will overwrite.")]
+
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float rotateSpeed;
 
+    private CharacterSO characterSettings;
     private CharacterController controller;
     private Animator animator;
     private FloatingJoystick joystick;
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        characterSettings = GetComponent<CharacterSettings>().GetSettings();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         joystick = FindObjectOfType<FloatingJoystick>();
@@ -28,9 +31,21 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        if (characterSettings != null)
+        {
+            moveSpeed = characterSettings.moveSpeed;
+            moveSmoothness = characterSettings.moveSmoothness;
+            rotateSpeed = characterSettings.rotateSpeed;
+        }
+        else
+        {
+            Debug.LogWarning("CharacterSettings could not be found. Using serialized values for PlayerController.");
+        }
+
         direction = Vector3.zero;
         currentPos = Vector3.zero;
         zero = Vector3.zero;
+        animator?.SetBool("IsMoving", false);
     }
 
     private void Update()
@@ -44,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
         direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
 
-        animator.SetBool("IsMoving", direction != Vector3.zero);
+        animator?.SetBool("IsMoving", direction != Vector3.zero);
     }
 
     private void FixedUpdate()

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1f873c9dd2420f4fb7d524a787ffb76, type: 3}
+  m_Name: PlayerSet1
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  moveSmoothness: 0.1
+  rotateSpeed: 2
+  firingRange: 10
+  firingCooldown: 2
+  firingPrefab: {fileID: 1988283092817409343, guid: 48bb283f71be6d94a92551d428197f4b,
+    type: 3}
+  targetTags:
+  - Enemy
+  projectileDamage: 100
+  projectileSpeed: 10
+  projectileLifeTime: 5
+  pickupRange: 3

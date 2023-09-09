@@ -2,29 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Collider))]
 public class FiringMechanics : MonoBehaviour
 {
+    [Header("CharacterSettings will overwrite.")]
+
     [SerializeField]
+    [Range(1f, 30f)]
     private float firingRange;
     [SerializeField]
+    [Range(0.1f, 2f)]
     private float firingCooldown;
     [SerializeField]
-    private GameObject firingProjectile;
+    private GameObject firingPrefab;
     [SerializeField]
     private List<string> targetTags;
+    [SerializeField]
+    [Range(1, 100)]
+    private int projectileDamage;
+    [SerializeField]
+    [Range(1f, 30f)]
+    private float projectileSpeed;
+    [SerializeField]
+    [Range(1f, 30f)]
+    private float projectileLifeTime;
 
+    private CharacterSO characterSettings;
+    private SphereCollider sphereCollider;
     private HashSet<Transform> enemiesDetected;
     private Transform closestEnemy;
-    private SphereCollider sphereCollider;
     private Transform firingPoint;
     private WaitForEndOfFrame waitForEndOfFrame;
     private WaitForSeconds waitForSeconds;
 
+
     private void Awake()
     {
-        enemiesDetected = new HashSet<Transform>();
+        characterSettings = GetComponentInParent<CharacterSettings>().GetSettings();
         sphereCollider = GetComponent<SphereCollider>();
+        enemiesDetected = new HashSet<Transform>();
+        closestEnemy = null;
         firingPoint = transform.GetChild(0);
         sphereCollider.radius = firingRange;
         waitForEndOfFrame = new WaitForEndOfFrame();
@@ -33,6 +50,22 @@ public class FiringMechanics : MonoBehaviour
 
     private void Start()
     {
+        if (characterSettings != null)
+        {
+            firingRange = characterSettings.firingRange;
+            firingCooldown = characterSettings.firingCooldown;
+            firingPrefab = characterSettings.firingPrefab;
+            targetTags = characterSettings.targetTags;
+            projectileDamage = characterSettings.projectileDamage;
+            projectileSpeed = characterSettings.projectileSpeed;
+            projectileLifeTime = characterSettings.projectileLifeTime;
+        }
+        else
+        {
+            Debug.LogWarning("CharacterSettings could not be found. Using serialized values for FiringMechanics.");
+        }
+
+        sphereCollider.radius = firingRange;
         StartCoroutine(FiringCoroutine());
     }
 
@@ -58,7 +91,11 @@ public class FiringMechanics : MonoBehaviour
 
         foreach (Transform enemy in enemiesDetected)
         {
-            // TODO: if isDead, continue
+            if (enemy.GetComponent<IDamageable>().Health <= 0)
+            {
+                enemiesDetected.Remove(enemy);
+                continue;
+            }
 
             if (closestEnemy == null)
             {
@@ -85,8 +122,8 @@ public class FiringMechanics : MonoBehaviour
                 yield return waitForEndOfFrame;
                 continue;
             }
-
-
+            GameObject current = Instantiate(firingPrefab, Vector3.zero, Quaternion.identity);
+            Projectile projectile = current.GetComponent<Projectile>();
             yield return waitForSeconds;
         }
     }
