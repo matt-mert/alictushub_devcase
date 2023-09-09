@@ -25,10 +25,4 @@ public class Boomerang : Projectile
     {
         base.Update();
     }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        Debug.Log("Trigger with " + other.name);
-    }
 }

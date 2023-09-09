@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectableSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private GameObject collectablePrefab;
+
+    private void OnEnable()
+    {
+        EnemyHealth.OnEnemyKilled += EnemyKilledHandler;
+    }
+
+    private void OnDisable()
+    {
+        EnemyHealth.OnEnemyKilled -= EnemyKilledHandler;
+    }
+
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void EnemyKilledHandler(Vector3 position)
     {
-        
+        Instantiate(collectablePrefab, position, Quaternion.identity);
     }
 }

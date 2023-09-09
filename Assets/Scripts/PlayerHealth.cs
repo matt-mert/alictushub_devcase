@@ -43,7 +43,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void GetKilled()
     {
-        // if (animator != null) animator.SetBool("IsDead", true);
+        if (animator != null) animator.SetBool("IsDead", true);
         OnPlayerDied?.Invoke();
     }
 }

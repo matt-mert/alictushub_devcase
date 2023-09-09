@@ -38,9 +38,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (joystick == null)
+        if (joystick == null || joystick.enabled == false)
         {
-            Debug.LogError("Joystick could not be found in the scene!");
             direction = Vector3.zero;
             return;
         }

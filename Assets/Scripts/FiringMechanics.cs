@@ -12,10 +12,13 @@ public class FiringMechanics : MonoBehaviour
     private SphereCollider sphereCollider;
     private HashSet<Transform> enemiesDetected;
     private Transform closestEnemy;
+
+    [SerializeField]
     private Transform firingPoint;
+
+    private GameObject firingPrefab;
     private float firingRange;
     private float firingCooldown;
-    private GameObject firingPrefab;
     private List<string> targetTags;
     private int projectileDamage;
     private float projectileSpeed;
@@ -27,15 +30,14 @@ public class FiringMechanics : MonoBehaviour
         sphereCollider = GetComponent<SphereCollider>();
         enemiesDetected = new HashSet<Transform>();
         closestEnemy = null;
-        firingPoint = transform.GetChild(0);
         sphereCollider.radius = firingRange;
     }
 
     private void Start()
     {
+        firingPrefab = characterSettings.firingPrefab;
         firingRange = characterSettings.firingRange;
         firingCooldown = characterSettings.firingCooldown;
-        firingPrefab = characterSettings.firingPrefab;
         targetTags = characterSettings.targetTags;
         projectileDamage = characterSettings.projectileDamage;
         projectileSpeed = characterSettings.projectileSpeed;
@@ -104,6 +106,7 @@ public class FiringMechanics : MonoBehaviour
             projectile.projectileDamage = projectileDamage;
             projectile.projectileSpeed = projectileSpeed;
             projectile.projectileLifeTime = projectileLifeTime;
+            projectile.projectileTargets = targetTags;
 
             Vector3 direction = (closestEnemy.position - transform.position).normalized;
             direction = new Vector3(direction.x, 0f, direction.z);

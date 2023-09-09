@@ -23,6 +23,6 @@ MonoBehaviour:
   targetTags:
   - Player
   projectileDamage: 50
-  projectileSpeed: 5
+  projectileSpeed: 20
   projectileLifeTime: 5
   pickupRange: 0
