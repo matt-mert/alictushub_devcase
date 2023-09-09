@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   moveSmoothness: 0.1
-  rotateSpeed: 2
+  rotateSpeed: 4
   maxHealth: 100
   firingRange: 10
   firingCooldown: 2
@@ -23,6 +23,6 @@ MonoBehaviour:
   targetTags:
   - Enemy
   projectileDamage: 1
-  projectileSpeed: 10
+  projectileSpeed: 20
   projectileLifeTime: 5
   pickupRange: 3

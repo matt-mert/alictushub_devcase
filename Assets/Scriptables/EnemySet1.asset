@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   moveSmoothness: 0.1
-  rotateSpeed: 2
+  rotateSpeed: 4
   maxHealth: 100
   firingRange: 15
   firingCooldown: 2

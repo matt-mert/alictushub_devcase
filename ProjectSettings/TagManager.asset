@@ -8,6 +8,7 @@ TagManager:
   - EnemyProjectile
   - Collectable
   - Environment
+  - Projectile
   layers:
   - Default
   - TransparentFX
