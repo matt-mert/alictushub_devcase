@@ -3,14 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class PickupMechanics : MonoBehaviour
 {
-    [Header("CharacterSettings will overwrite.")]
-
-    [SerializeField]
-    [Range(1f, 30f)]
-    private float pickupRange;
+    public delegate void OnPickupDelegate();
+    public static event OnPickupDelegate OnPickup;
 
     private CharacterSO characterSettings;
     private SphereCollider sphereCollider;
+    private float pickupRange;
 
     private void Awake()
     {
@@ -20,15 +18,7 @@ public class PickupMechanics : MonoBehaviour
 
     private void Start()
     {
-        if (characterSettings != null)
-        {
-            pickupRange = characterSettings.pickupRange;
-        }
-        else
-        {
-            Debug.LogWarning("CharacterSettings could not be found. Using serialized values for PickupMechanics.");
-        }
-
+        pickupRange = characterSettings.pickupRange;
         sphereCollider.radius = pickupRange;
     }
 
@@ -37,7 +27,8 @@ public class PickupMechanics : MonoBehaviour
         ICollectable collectable = other.GetComponent<ICollectable>();
         if (collectable != null)
         {
-            collectable.Collect();
+            collectable.GetCollected();
+            OnPickup?.Invoke();
         }
     }
 }

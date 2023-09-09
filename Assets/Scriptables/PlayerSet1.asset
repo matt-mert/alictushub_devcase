@@ -15,13 +15,14 @@ MonoBehaviour:
   moveSpeed: 10
   moveSmoothness: 0.1
   rotateSpeed: 2
+  maxHealth: 100
   firingRange: 10
   firingCooldown: 2
   firingPrefab: {fileID: 1988283092817409343, guid: 48bb283f71be6d94a92551d428197f4b,
     type: 3}
   targetTags:
   - Enemy
-  projectileDamage: 100
+  projectileDamage: 1
   projectileSpeed: 10
   projectileLifeTime: 5
   pickupRange: 3

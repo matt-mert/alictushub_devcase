@@ -139,7 +139,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!108 &12636071
 Light:
@@ -296,7 +296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf8d7631dd1f134eae934375694fb19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupRange: 0
 --- !u!1 &124000048
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +460,7 @@ GameObject:
   - component: {fileID: 143786669}
   m_Layer: 0
   m_Name: Environment
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -498,10 +497,10 @@ GameObject:
   - component: {fileID: 242730323}
   m_Layer: 0
   m_Name: InvisibleWall4
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &242730322
 Transform:
@@ -543,10 +542,10 @@ GameObject:
   - component: {fileID: 371840672}
   m_Layer: 0
   m_Name: InvisibleWall2
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &371840671
 Transform:
@@ -707,10 +706,10 @@ GameObject:
   - component: {fileID: 1005354825}
   m_Layer: 0
   m_Name: InvisibleWall3
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1005354824
 Transform:
@@ -1154,10 +1153,10 @@ GameObject:
   - component: {fileID: 1900885523}
   m_Layer: 0
   m_Name: InvisibleWall1
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1900885522
 Transform:
@@ -1246,15 +1245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5e21437ee423d4d8d28b0dce5e11f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firingRange: 10
-  firingCooldown: 2
-  firingPrefab: {fileID: 1988283092817409343, guid: 48bb283f71be6d94a92551d428197f4b,
-    type: 3}
-  targetTags:
-  - Enemy
-  projectileDamage: 100
-  projectileSpeed: 10
-  projectileLifeTime: 3
 --- !u!1 &2038262396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,7 +1258,7 @@ GameObject:
   - component: {fileID: 2038262399}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -3222,9 +3212,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6044328157871958765}
   - component: {fileID: 6388941853045633112}
-  - component: {fileID: 6388941853045633113}
   - component: {fileID: 6388941853045633114}
   - component: {fileID: 6388941853045633115}
+  - component: {fileID: 6388941853045633113}
+  - component: {fileID: 6388941853045633116}
   m_Layer: 3
   m_Name: MainCharacterPrefab
   m_TagString: Player
@@ -3262,9 +3253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8979ac7fc2d48524b97242df10338bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  moveSmoothness: 0.1
-  rotateSpeed: 4
 --- !u!95 &6388941853045633114
 Animator:
   serializedVersion: 5
@@ -3297,7 +3285,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f431634c2acea0a4c95783b6fe515d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterSO: {fileID: 0}
+  characterSO: {fileID: 11400000, guid: 814f8f6e82eb5864eb7487a906759575, type: 2}
+--- !u!114 &6388941853045633116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6388941853045633111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b928c77027e7af4bad82dce7cb7c8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6588341356765696780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3343,8 +3343,10 @@ GameObject:
   - component: {fileID: 6668064594384045582}
   - component: {fileID: 6668064594384045583}
   - component: {fileID: 6668064594384045584}
+  - component: {fileID: 6668064594384045586}
+  - component: {fileID: 6668064594384045585}
   m_Layer: 10
-  m_Name: SkeletonBruteRiggedLodsRigged
+  m_Name: SkeletonBrutePrefab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3401,6 +3403,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSO: {fileID: 11400000, guid: 9ffcdda915d5b0f4297727bce9d120c8, type: 2}
+--- !u!114 &6668064594384045585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6668064594384045581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027bdc77b1f620d4bb1076c7754b34d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6668064594384045586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6668064594384045581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d387a0162009c2049bf91d118e18eb80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6867373869309568342
 GameObject:
   m_ObjectHideFlags: 0

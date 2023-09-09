@@ -15,6 +15,7 @@ MonoBehaviour:
   moveSpeed: 7
   moveSmoothness: 0.1
   rotateSpeed: 2
+  maxHealth: 100
   firingRange: 15
   firingCooldown: 2
   firingPrefab: {fileID: 7067951933436005128, guid: 749f878080d13d743b4480624b3795ae,

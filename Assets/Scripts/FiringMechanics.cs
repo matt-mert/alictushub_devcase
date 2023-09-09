@@ -5,36 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class FiringMechanics : MonoBehaviour
 {
-    [Header("CharacterSettings will overwrite.")]
-
-    [SerializeField]
-    [Range(1f, 30f)]
-    private float firingRange;
-    [SerializeField]
-    [Range(0.1f, 2f)]
-    private float firingCooldown;
-    [SerializeField]
-    private GameObject firingPrefab;
-    [SerializeField]
-    private List<string> targetTags;
-    [SerializeField]
-    [Range(1, 100)]
-    private int projectileDamage;
-    [SerializeField]
-    [Range(1f, 30f)]
-    private float projectileSpeed;
-    [SerializeField]
-    [Range(1f, 30f)]
-    private float projectileLifeTime;
+    public delegate void OnFireDelegate();
+    public static event OnFireDelegate OnFire;
 
     private CharacterSO characterSettings;
     private SphereCollider sphereCollider;
     private HashSet<Transform> enemiesDetected;
     private Transform closestEnemy;
     private Transform firingPoint;
-    private WaitForEndOfFrame waitForEndOfFrame;
-    private WaitForSeconds waitForSeconds;
-
+    private float firingRange;
+    private float firingCooldown;
+    private GameObject firingPrefab;
+    private List<string> targetTags;
+    private int projectileDamage;
+    private float projectileSpeed;
+    private float projectileLifeTime;
 
     private void Awake()
     {
@@ -44,26 +29,17 @@ public class FiringMechanics : MonoBehaviour
         closestEnemy = null;
         firingPoint = transform.GetChild(0);
         sphereCollider.radius = firingRange;
-        waitForEndOfFrame = new WaitForEndOfFrame();
-        waitForSeconds = new WaitForSeconds(firingCooldown);
     }
 
     private void Start()
     {
-        if (characterSettings != null)
-        {
-            firingRange = characterSettings.firingRange;
-            firingCooldown = characterSettings.firingCooldown;
-            firingPrefab = characterSettings.firingPrefab;
-            targetTags = characterSettings.targetTags;
-            projectileDamage = characterSettings.projectileDamage;
-            projectileSpeed = characterSettings.projectileSpeed;
-            projectileLifeTime = characterSettings.projectileLifeTime;
-        }
-        else
-        {
-            Debug.LogWarning("CharacterSettings could not be found. Using serialized values for FiringMechanics.");
-        }
+        firingRange = characterSettings.firingRange;
+        firingCooldown = characterSettings.firingCooldown;
+        firingPrefab = characterSettings.firingPrefab;
+        targetTags = characterSettings.targetTags;
+        projectileDamage = characterSettings.projectileDamage;
+        projectileSpeed = characterSettings.projectileSpeed;
+        projectileLifeTime = characterSettings.projectileLifeTime;
 
         sphereCollider.radius = firingRange;
         StartCoroutine(FiringCoroutine());
@@ -91,7 +67,7 @@ public class FiringMechanics : MonoBehaviour
 
         foreach (Transform enemy in enemiesDetected)
         {
-            if (enemy.GetComponent<IDamageable>().Health <= 0)
+            if (enemy.GetComponent<IDamageable>().GetHealthValue() <= 0)
             {
                 enemiesDetected.Remove(enemy);
                 continue;
@@ -119,12 +95,21 @@ public class FiringMechanics : MonoBehaviour
         {
             if (closestEnemy == null)
             {
-                yield return waitForEndOfFrame;
+                yield return new WaitForEndOfFrame();
                 continue;
             }
-            GameObject current = Instantiate(firingPrefab, Vector3.zero, Quaternion.identity);
+            GameObject current = Instantiate(firingPrefab, firingPoint.position, Quaternion.identity);
             Projectile projectile = current.GetComponent<Projectile>();
-            yield return waitForSeconds;
+
+            projectile.projectileDamage = projectileDamage;
+            projectile.projectileSpeed = projectileSpeed;
+            projectile.projectileLifeTime = projectileLifeTime;
+
+            Vector3 direction = (closestEnemy.position - transform.position).normalized;
+            direction = new Vector3(direction.x, 0f, direction.z);
+            projectile.projectileDirection = direction;
+
+            yield return new WaitForSeconds(firingCooldown);
         }
     }
 }

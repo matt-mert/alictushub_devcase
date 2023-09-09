@@ -13,6 +13,11 @@ public class CharacterSO : ScriptableObject
     [Range(1f, 30f)]
     public float rotateSpeed;
 
+    [Header("Health Settings:")]
+
+    [Range(1, 500)]
+    public int maxHealth;
+
     [Header("Firing Settings:")]
 
     [Range(1f, 30f)]

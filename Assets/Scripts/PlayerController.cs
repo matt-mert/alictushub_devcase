@@ -1,17 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterSettings))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("CharacterSettings will overwrite.")]
-
-    [SerializeField]
-    private float moveSpeed;
-    [SerializeField]
-    private float moveSmoothness;
-    [SerializeField]
-    private float rotateSpeed;
-
     private CharacterSO characterSettings;
     private CharacterController controller;
     private Animator animator;
@@ -20,6 +12,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentPos;
     private Quaternion currentRot;
     private Vector3 zero;
+    private float moveSpeed;
+    private float moveSmoothness;
+    private float rotateSpeed;
 
     private void Awake()
     {
@@ -31,16 +26,9 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        if (characterSettings != null)
-        {
-            moveSpeed = characterSettings.moveSpeed;
-            moveSmoothness = characterSettings.moveSmoothness;
-            rotateSpeed = characterSettings.rotateSpeed;
-        }
-        else
-        {
-            Debug.LogWarning("CharacterSettings could not be found. Using serialized values for PlayerController.");
-        }
+        moveSpeed = characterSettings.moveSpeed;
+        moveSmoothness = characterSettings.moveSmoothness;
+        rotateSpeed = characterSettings.rotateSpeed;
 
         direction = Vector3.zero;
         currentPos = Vector3.zero;
