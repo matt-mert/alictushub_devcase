@@ -11,6 +11,8 @@ public class InGameUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI retryText;
     [SerializeField]
+    private TextMeshProUGUI healthText;
+    [SerializeField]
     private GameObject pausePanel;
     [SerializeField]
     private GameObject retryPanel;
@@ -18,16 +20,19 @@ public class InGameUI : MonoBehaviour
     private GameObject initialPanel;
 
     private FloatingJoystick joystick;
+    private PlayerHealth playerHealth;
     private int enemiesKilled;
 
     private void Awake()
     {
         joystick = FindObjectOfType<FloatingJoystick>();
+        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     private void OnEnable()
     {
         EnemyHealth.OnEnemyKilled += EnemyKilledHandler;
+        PlayerHealth.OnPlayerDamaged += PlayerDamagedHelper;
         PlayerHealth.OnPlayerDied += PlayerDiedHandler;
         PickupMechanics.OnPickup += PickupHandler;
     }
@@ -35,6 +40,7 @@ public class InGameUI : MonoBehaviour
     private void OnDisable()
     {
         EnemyHealth.OnEnemyKilled -= EnemyKilledHandler;
+        PlayerHealth.OnPlayerDamaged -= PlayerDamagedHelper;
         PlayerHealth.OnPlayerDied -= PlayerDiedHandler;
         PickupMechanics.OnPickup -= PickupHandler;
     }
@@ -48,6 +54,7 @@ public class InGameUI : MonoBehaviour
         enemiesKilled = 0;
         enemiesText.text = enemiesKilled.ToString();
         coinsText.text = LevelManager.CoinsAmount.ToString();
+        healthText.text = playerHealth.GetHealthValue().ToString();
     }
 
     private IEnumerator InitialCoroutine()
@@ -59,10 +66,15 @@ public class InGameUI : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    private void EnemyKilledHandler(Vector3 position)
+    private void EnemyKilledHandler(GameObject obj)
     {
         enemiesKilled++;
         enemiesText.text = enemiesKilled.ToString();
+    }
+
+    private void PlayerDamagedHelper(int updated)
+    {
+        healthText.text = playerHealth.GetHealthValue().ToString();
     }
 
     private void PlayerDiedHandler()

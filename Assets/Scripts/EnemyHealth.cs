@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
-    public delegate void OnEnemyKilledDelegate(Vector3 position);
+    public delegate void OnEnemyKilledDelegate(GameObject enemy);
     public static event OnEnemyKilledDelegate OnEnemyKilled;
 
     private int health;
@@ -41,7 +41,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     private void GetKilled()
     {
-        OnEnemyKilled?.Invoke(transform.position);
+        OnEnemyKilled?.Invoke(gameObject);
         if (animator != null) animator.SetBool("IsDead", true);
         else Destroy(gameObject);
     }

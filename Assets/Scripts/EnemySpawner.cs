@@ -43,7 +43,7 @@ public class EnemySpawner : MonoBehaviour
         enemiesCount = 0;
     }
 
-    private void EnemyKilledHandler(Vector3 position)
+    private void EnemyKilledHandler(GameObject obj)
     {
         enemiesCount--;
     }
@@ -52,26 +52,28 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitForSeconds(enemySpawnDelay);
+
             if (enemiesCount == enemiesMaxCount) continue;
 
             Vector3 selected;
             while (true)
             {
-                float randomX = Random.Range(0f, mapSizeX);
-                float randomZ = Random.Range(0f, mapSizeZ);
+                yield return new WaitForEndOfFrame();
+                float randomX = Random.Range(-mapSizeX / 2, mapSizeX / 2);
+                float randomZ = Random.Range(-mapSizeZ / 2, mapSizeZ / 2);
                 Vector3 temp = new Vector3(randomX, 0f, randomZ);
                 if (Vector3.Distance(temp, playerTransform.position) > enemySpawnDistance)
                 {
                     selected = temp;
                     break;
                 }
-                yield return new WaitForEndOfFrame();
             }
 
             GameObject current = Instantiate(enemyPrefab, selected, Quaternion.identity);
             enemiesCount++;
             OnEnemySpawned?.Invoke();
-            yield return new WaitForSeconds(enemySpawnDelay);
+            
         }
     }
 }

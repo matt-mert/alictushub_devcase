@@ -14,12 +14,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        characterSettings = GetComponent<CharacterSettings>().GetSettings();
-        animator = GetComponent<Animator>();
-    }
-
-    private void Start()
-    {
+        characterSettings = GetComponentInParent<CharacterSettings>().GetSettings();
+        animator = GetComponentInParent<Animator>();
         health = characterSettings.maxHealth;
     }
 
@@ -49,7 +45,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    private void GetKilled()
+    public void GetKilled()
     {
         if (animator != null) animator.SetBool("IsDead", true);
         OnPlayerDied?.Invoke();

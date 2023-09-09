@@ -9,6 +9,13 @@ public class CollectableSpawner : MonoBehaviour
     [SerializeField]
     private float initialRange;
 
+    private Transform playerTransform;
+
+    private void Awake()
+    {
+        playerTransform = FindObjectOfType<PlayerHealth>().transform;
+    }
+
     private void OnEnable()
     {
         EnemyHealth.OnEnemyKilled += EnemyKilledHandler;
@@ -23,15 +30,18 @@ public class CollectableSpawner : MonoBehaviour
     {
         for (int i = 0; i < initialAmount; i++)
         {
-            float randomX = Random.Range(1, initialRange);
-            float randomZ = Random.Range(1, initialRange);
-            Vector3 position = new Vector3(randomX, 0f, randomZ);
+            float randomX = Random.Range(-initialRange, initialRange);
+            float randomZ = Random.Range(-initialRange, initialRange);
+            Vector3 position = new Vector3(playerTransform.position.x + randomX, 0f,
+                                           playerTransform.position.z + randomZ);
+            Vector3 modified = new Vector3(position.x, position.y + 2f, position.z);
             Instantiate(collectablePrefab, position, Quaternion.identity);
         }
     }
 
-    private void EnemyKilledHandler(Vector3 position)
+    private void EnemyKilledHandler(GameObject obj)
     {
-        Instantiate(collectablePrefab, position, Quaternion.identity);
+        Vector3 modified = new Vector3(obj.transform.position.x, obj.transform.position.y + 2f, obj.transform.position.z);
+        Instantiate(collectablePrefab, modified, Quaternion.identity);
     }
 }

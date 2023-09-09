@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class FiringMechanics : MonoBehaviour
 {
     public delegate void OnFireDelegate();
     public static event OnFireDelegate OnFire;
 
     private CharacterSO characterSettings;
-    private SphereCollider sphereCollider;
+    private CapsuleCollider capsuleCollider;
     private HashSet<Transform> enemiesDetected;
     private Transform closestEnemy;
 
@@ -27,10 +27,20 @@ public class FiringMechanics : MonoBehaviour
     private void Awake()
     {
         characterSettings = GetComponentInParent<CharacterSettings>().GetSettings();
-        sphereCollider = GetComponent<SphereCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
         enemiesDetected = new HashSet<Transform>();
         closestEnemy = null;
-        sphereCollider.radius = firingRange;
+        capsuleCollider.radius = firingRange;
+    }
+
+    private void OnEnable()
+    {
+        EnemyHealth.OnEnemyKilled += EnemyKilledHandler;
+    }
+
+    private void OnDisable()
+    {
+        EnemyHealth.OnEnemyKilled -= EnemyKilledHandler;
     }
 
     private void Start()
@@ -43,7 +53,7 @@ public class FiringMechanics : MonoBehaviour
         projectileSpeed = characterSettings.projectileSpeed;
         projectileLifeTime = characterSettings.projectileLifeTime;
 
-        sphereCollider.radius = firingRange;
+        capsuleCollider.radius = firingRange;
         StartCoroutine(FiringCoroutine());
     }
 
@@ -69,7 +79,21 @@ public class FiringMechanics : MonoBehaviour
 
         foreach (Transform enemy in enemiesDetected)
         {
-            if (enemy.GetComponent<IDamageable>().GetHealthValue() <= 0)
+            if (enemy == null)
+            {
+                enemiesDetected.Remove(enemy);
+                continue;
+            }
+
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+
+            if (damageable == null)
+            {
+                enemiesDetected.Remove(enemy);
+                continue;
+            }
+
+            if (damageable.GetHealthValue() <= 0)
             {
                 enemiesDetected.Remove(enemy);
                 continue;
@@ -89,6 +113,11 @@ public class FiringMechanics : MonoBehaviour
                 closestEnemy = enemy;
             }
         }
+    }
+
+    private void EnemyKilledHandler(GameObject obj)
+    {
+        if (enemiesDetected.Contains(obj.transform)) enemiesDetected.Remove(obj.transform);
     }
 
     private IEnumerator FiringCoroutine()

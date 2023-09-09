@@ -1,25 +1,25 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class PickupMechanics : MonoBehaviour
 {
     public delegate void OnPickupDelegate();
     public static event OnPickupDelegate OnPickup;
 
     private CharacterSO characterSettings;
-    private SphereCollider sphereCollider;
+    private CapsuleCollider capsuleCollider;
     private float pickupRange;
 
     private void Awake()
     {
         characterSettings = GetComponentInParent<CharacterSettings>().GetSettings();
-        sphereCollider = GetComponent<SphereCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     private void Start()
     {
         pickupRange = characterSettings.pickupRange;
-        sphereCollider.radius = pickupRange;
+        capsuleCollider.radius = pickupRange;
     }
 
     private void OnTriggerEnter(Collider other)

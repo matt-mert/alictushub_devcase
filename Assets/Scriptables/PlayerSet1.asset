@@ -25,4 +25,4 @@ MonoBehaviour:
   projectileDamage: 100
   projectileSpeed: 20
   projectileLifeTime: 5
-  pickupRange: 3
+  pickupRange: 2
