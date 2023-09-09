@@ -123,6 +123,11 @@ public class EnemyController : MonoBehaviour
         attackingFlag = false;
     }
 
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
+
     public void ThrowProjectile()
     {
         GameObject current = Instantiate(firingPrefab, firingPoint.position, Quaternion.identity);

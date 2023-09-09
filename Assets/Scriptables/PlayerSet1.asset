@@ -22,7 +22,7 @@ MonoBehaviour:
     type: 3}
   targetTags:
   - Enemy
-  projectileDamage: 1
+  projectileDamage: 100
   projectileSpeed: 20
   projectileLifeTime: 5
   pickupRange: 3

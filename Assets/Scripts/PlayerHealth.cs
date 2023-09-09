@@ -23,6 +23,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         health = characterSettings.maxHealth;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            GetKilled();
+        }
+    }
+
     public int GetHealthValue()
     {
         return health;

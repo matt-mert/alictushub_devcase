@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -8,9 +9,13 @@ public class InGameUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI coinsText;
     [SerializeField]
+    private TextMeshProUGUI retryText;
+    [SerializeField]
     private GameObject pausePanel;
     [SerializeField]
     private GameObject retryPanel;
+    [SerializeField]
+    private GameObject initialPanel;
 
     private FloatingJoystick joystick;
     private int enemiesKilled;
@@ -36,11 +41,22 @@ public class InGameUI : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(InitialCoroutine());
+
         pausePanel.SetActive(false);
         retryPanel.SetActive(false);
         enemiesKilled = 0;
         enemiesText.text = enemiesKilled.ToString();
         coinsText.text = LevelManager.CoinsAmount.ToString();
+    }
+
+    private IEnumerator InitialCoroutine()
+    {
+        Time.timeScale = 0;
+        initialPanel.SetActive(true);
+        yield return new WaitForSecondsRealtime(3);
+        initialPanel.SetActive(false);
+        Time.timeScale = 1;
     }
 
     private void EnemyKilledHandler(Vector3 position)
@@ -52,6 +68,7 @@ public class InGameUI : MonoBehaviour
     private void PlayerDiedHandler()
     {
         Time.timeScale = 0;
+        retryText.text = "YOU KILLED " + enemiesKilled.ToString() + " ENEMIES";
         retryPanel.SetActive(true);
     }
 
